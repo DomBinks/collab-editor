@@ -4,16 +4,26 @@
     <title>Collaborative Editor Test</title>
   </head>
   <body>
-    <h1>Hello, world!</h1>
+    <h1>Collaborative Editor Test</h1>
+    <div id="lines"></div>
+
+    <input type="text" id="text_input">
+    <button id="submit_input" onclick="submitLine(document.getElementById('text_input').value)">Send</button>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8">
-        var socket = io();
-        socket.on('connect', function() {
-            socket.emit('my event', {data: 'I\'m connected!'});
-        });
-        socket.on('alert event', function() {
-          alert("Test!!!");
+        let socket = io();
+
+        function submitLine(line)
+        {
+          socket.emit('submit line', {data: line});
+        }
+
+        socket.on('add line', function(json) {
+          const line = document.createElement('h2');
+          const node = document.createTextNode(json['data']);
+          line.appendChild(node);
+          document.getElementById('lines').appendChild(line);
         });
     </script> 
   </body>
