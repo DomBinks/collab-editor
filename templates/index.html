@@ -3,24 +3,21 @@
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Collaborative Editor Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/script.js') }}"></script> 
   </head>
   <body>
     <h1>Collaborative Editor Test</h1>
-    
-    <textarea id="text_area" rows = "30" cols="80" onchange="boxChange(document.getElementById('text_area').value)"></textarea>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf-8">
-        let socket = io();
-
-        function boxChange(box)
-        {
-          socket.emit('box change', {data: box});
-        }
-
-        socket.on('update box', function(json) {
-          document.getElementById('text_area').value = json['data'];
-        });
-    </script> 
+    <form id="box_form" method="POST" action="{{ url_for('download') }}">
+      <select id="select" name="extension">
+        <option value=".py">Python</option>
+        <option value=".c">C</option>
+        <option value=".hs">Haskell</option>
+      </select>
+      <br>
+      <textarea id="text_area" name="content" rows = "30" cols="80" onchange="boxChange()"></textarea>
+      <br>
+      <input type="submit" value="Download"></input>
+    </form>
   </body>
 </html>
