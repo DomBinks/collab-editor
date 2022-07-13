@@ -9,10 +9,10 @@ socketio = SocketIO(app)
 def index():
     return render_template('index.html') 
 
-@socketio.on('get line')
-def hand_add_line(json):
-    print('Line submitted: ' + str(json))
-    socketio.emit('add line', json)
+@socketio.on('box change')
+def handle_box_change(json):
+    print('Box changed')
+    socketio.emit('update box', json)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

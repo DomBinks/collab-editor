@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Collaborative Editor Test</title>
   </head>
   <body>
     <h1>Collaborative Editor Test</h1>
-    <div id="lines"></div>
-
-    <input type="text" id="text_input">
-    <button id="submit_input" onclick="submitLine(document.getElementById('text_input').value)">Send</button>
     
+    <textarea id="text_area" rows = "30" cols="80" onchange="boxChange(document.getElementById('text_area').value)"></textarea>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8">
         let socket = io();
 
-        function submitLine(line)
+        function boxChange(box)
         {
-          socket.emit('submit line', {data: line});
+          socket.emit('box change', {data: box});
         }
 
-        socket.on('add line', function(json) {
-          const line = document.createElement('h2');
-          const node = document.createTextNode(json['data']);
-          line.appendChild(node);
-          document.getElementById('lines').appendChild(line);
+        socket.on('update box', function(json) {
+          document.getElementById('text_area').value = json['data'];
         });
     </script> 
   </body>
