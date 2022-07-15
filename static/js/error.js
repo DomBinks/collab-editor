@@ -1,0 +1,4 @@
+function returnToIndex()
+{
+    window.location = '/';
+}

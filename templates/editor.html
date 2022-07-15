@@ -4,13 +4,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Collaborative Editor Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/script.js') }}"></script> 
+    <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/editor.js') }}"></script> 
 
     {% with messages = get_flashed_messages() %}
       {% if 'download error' in messages %}
         <script>alert('Unable to download. Please try again.')</script> 
       {% endif %}
     {% endwith %}
+
+    <script>connectToSession({{ session_id }})</script>
 
   </head>
   <body>
@@ -24,7 +26,7 @@
         <option value=".hs">Haskell</option>
       </select>
       <br>
-      <textarea id="text_area" name="content" rows = "30" cols="80" onchange="boxChange()"></textarea>
+      <textarea id="text_area" name="content" rows = "30" cols="80" onchange="boxChange( {{ session_id }} )"></textarea>
       <br>
       <input type="submit" value="Download"></input>
     </form>
