@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, flash, redirect, render_template, request, send_file
 from flask_socketio import SocketIO
 from random import randint
 
@@ -9,7 +9,7 @@ socketio = SocketIO(app)
 current_sessions = []
 
 @app.errorhandler(404)
-def error_page(_):
+def handle_404(e):
     return render_template('error.html'), 404
 
 @app.route('/')
@@ -30,12 +30,11 @@ def handle_start_session():
     print('New session id: ' + session_id)
 
     socketio.emit('redirect', {'page': '/editor/' + session_id})
-# Need to ensure session is closed once all clients have stopped connecting
 
 @app.route('/editor/<session_id>')
 def editor(session_id):
     if session_id in current_sessions:
-        return render_template('editor.html')
+        return render_template('editor.html', session_id=session_id)
     else:
         return render_template('error.html')
 
@@ -43,11 +42,15 @@ def editor(session_id):
 def download():
     download_path = "dynamic/download" + request.form['extension'] 
     print('Downloading: ' + download_path)
-    # Need to add error detection logic with try and except
-    file = open(download_path, "w")
-    file.write(request.form['content'])
-    file.close()
-    return send_file(download_path, as_attachment=True)
+    try:
+        file = open(download_path, "w")
+        file.write(request.form['content'])
+        file.close()
+        return send_file(download_path, as_attachment=True)
+    except:
+        print('Error when downloading: ' + download_path)
+        flash('download error')
+        return redirect(request.referrer)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

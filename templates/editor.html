@@ -5,10 +5,17 @@
     <title>Collaborative Editor Test</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/script.js') }}"></script> 
+
+    {% with messages = get_flashed_messages() %}
+      {% if 'download error' in messages %}
+        <script>alert('Unable to download. Please try again.')</script> 
+      {% endif %}
+    {% endwith %}
+
   </head>
   <body>
     <a href="{{ url_for('index') }}"><h1>Collaborative Editor Test</h1></a>
-    <h2>Current session id: {{ current }}</h2>
+    <h2>Current session id: {{ session_id }}</h2>
     <form id="box_form" method="POST" action="{{ url_for('download') }}">
       <select id="select" name="extension">
         <option value=".py">Python</option>
