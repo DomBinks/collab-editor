@@ -8,10 +8,18 @@
   </head>
   <body>
     <a href="{{ url_for('index') }}"><h1>Collaborative Editor Test</h1></a>
-    <h2>Start a new session</h2>
-    <button id="start_button" onclick="startNewSession()">Start</button>
-    <h2>Join an existing session</h2>
-    <input id="join_id_text" type="text"></input>
-    <button id="join_button" onclick="joinSession()">Join</button>
+    <h2>Current session id: {{ current }}</h2>
+    <form id="box_form" method="POST" action="{{ url_for('download') }}">
+      <select id="select" name="extension">
+        <option value=".py">Python</option>
+        <option value=".js">JavaScript</option>
+        <option value=".c">C</option>
+        <option value=".hs">Haskell</option>
+      </select>
+      <br>
+      <textarea id="text_area" name="content" rows = "30" cols="80" onchange="boxChange()"></textarea>
+      <br>
+      <input type="submit" value="Download"></input>
+    </form>
   </body>
 </html>
