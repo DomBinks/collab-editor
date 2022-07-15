@@ -18,11 +18,11 @@ def handle_box_change(json):
 def download():
     download_path = "dynamic/download" + request.form['extension'] 
     print('Downloading: ' + download_path)
-    #Need to add error detection logic with try and except
+    # Need to add error detection logic with try and except
     file = open(download_path, "w")
     file.write(request.form['content'])
     file.close()
-    return send_file(download_path)
+    return send_file(download_path, as_attachment=True)
     # Works for .hs files but not .py or .c - just displays a page with the code
 
 if __name__ == '__main__':
