@@ -43,7 +43,11 @@ def handle_box_change(json):
 
 @socketio.on('start session')
 def handle_start_session():
-    session_id = ''.join(str(randint(0, 9)) for _ in range(6))
+    while True:
+        session_id = ''.join(str(randint(0, 9)) for _ in range(6))
+        if session_id not in current_sessions:
+            break
+
     current_sessions[session_id] = 0 
     print('Starting new session with id ' + session_id)
 
