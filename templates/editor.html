@@ -12,7 +12,7 @@
       {% endif %}
     {% endwith %}
 
-    <script>connectToSession({{ session_id }})</script>
+    <script>connectToSession('{{ session_id }}')</script>
   </head>
   <body>
     <a href="{{ url_for('index') }}"><h1>Collaborative Editor Test</h1></a>
@@ -25,7 +25,7 @@
         <option value=".hs">Haskell</option>
       </select>
       <br>
-      <textarea id="text_area" name="content" rows = "30" cols="80" onchange="boxChange({{ session_id }})"></textarea>
+      <textarea id="text_area" name="content" rows = "30" cols="80" onchange="boxChange()"></textarea>
       <br>
       <input type="submit" value="Download"></input>
     </form>

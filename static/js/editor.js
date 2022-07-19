@@ -2,10 +2,10 @@ let socket = io();
 
 let id;
 
-function boxChange(session_id)
+function boxChange()
 {
     let box = document.getElementById('text_area').value;
-    socket.emit('box change', {data: box, session_id: session_id});
+    socket.emit('box change', {data: box, session_id: id});
 }
 
 socket.on('update box', (json) => {
