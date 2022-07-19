@@ -2,16 +2,16 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>Collaborative Editor Test</title>
+    <title>Collaborative Editor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/index.js') }}"></script> 
   </head>
   <body>
-    <a href="{{ url_for('index') }}"><h1>Collaborative Editor Test</h1></a>
+    <a href="{{ url_for('index') }}"><h1>Collaborative Editor</h1></a>
     <h2>Start a new session</h2>
-    <button id="start_button" onclick="startNewSession()">Start</button>
+    <button onclick="startNewSession()">Start</button>
     <h2>Join an existing session</h2>
-    <input id="join_id_text" type="text"></input>
-    <button id="join_button" onclick="joinSession()">Join</button>
+    <input id="join" type="text"></input>
+    <button onclick="joinSession()">Join</button>
   </body>
 </html>

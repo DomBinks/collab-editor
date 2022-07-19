@@ -2,30 +2,32 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>Collaborative Editor Test</title>
+    <title>Collaborative Editor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/editor.js') }}"></script> 
 
+    <!--Displays an alert if the download isn't successful-->
     {% with messages = get_flashed_messages() %}
       {% if 'download error' in messages %}
         <script>alert('Unable to download. Please try again.')</script> 
       {% endif %}
     {% endwith %}
 
+    <!--Notifies the server of a new connection to the session-->
     <script>connectToSession('{{ session_id }}')</script>
   </head>
   <body>
-    <a href="{{ url_for('index') }}"><h1>Collaborative Editor Test</h1></a>
+    <a href="{{ url_for('index') }}"><h1>Collaborative Editor</h1></a>
     <h2>Current session id: {{ session_id }}</h2>
-    <form id="box_form" method="POST" action="{{ url_for('download') }}">
-      <select id="select" name="extension">
+    <form method="POST" action="{{ url_for('download') }}">
+      <select name="extension">
         <option value=".py">Python</option>
         <option value=".js">JavaScript</option>
         <option value=".c">C</option>
         <option value=".hs">Haskell</option>
       </select>
       <br>
-      <textarea id="text_area" name="content" rows = "30" cols="80" onchange="boxChange()"></textarea>
+      <textarea id="text-area" name="content" rows = "30" cols="80" onchange="textChange()"></textarea>
       <br>
       <input type="submit" value="Download"></input>
     </form>

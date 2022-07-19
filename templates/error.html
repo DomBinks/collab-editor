@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>Collaborative Editor Test</title>
+    <title>Collaborative Editor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js" integrity="sha512-9mpsATI0KClwt+xVZfbcf2lJ8IFBAwsubJ6mI3rtULwyM3fBmQFzj0It4tGqxLOGQwGfJdk/G+fANnxfq9/cew=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='js/error.js') }}"></script> 
   </head>
   <body>
-    <a href="{{ url_for('index') }}"><h1>Collaborative Editor Test</h1></a>
-    <h2>Sorry but this page doesn't exist</h2>
-    <button id="return_to_index_button" onclick="returnToIndex()">Return</button>
+    <a href="{{ url_for('index') }}"><h1>Collaborative Editor</h1></a>
+    <h2>{{ message }}</h2>
+    <button onclick="returnToIndex()">Return</button>
   </body>
 </html>
