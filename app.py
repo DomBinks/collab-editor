@@ -8,6 +8,7 @@ socketio = SocketIO(app)
 
 current_sessions = {} # Keeps track of number of users per session
 current_ids = {} # Keeps track of which user is in which session
+current_conents = {} # Keeps track on the content of the textbox of each session
 
 @app.errorhandler(404)
 def handle_404(e):
@@ -39,6 +40,7 @@ def download():
 
 @socketio.on('box change')
 def handle_box_change(json):
+    current_conents[json['session_id']] = json['data']
     socketio.emit('update box', json)
 
 @socketio.on('start session')
@@ -64,6 +66,7 @@ def handle_connect_to_session(json):
     print('Adding ' + request.sid + ' to current_ids')
     current_ids[request.sid] = session_id
     current_sessions[session_id] += 1
+    socketio.emit('update box', {'session_id': session_id, 'data': current_conents[session_id]})
 
 @socketio.on('disconnect')
 def handle_disconnect():
