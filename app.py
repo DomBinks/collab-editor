@@ -5,6 +5,8 @@ from os import getenv
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = getenv('APP_SECRET_KEY') 
+
+# If the environment variable isn't set use this one instead
 if app.config['SECRET_KEY'] == None:
    app.config['SECRET_KEY'] = '223c342ae283c1db56027b42a479e83f516153346c82bd'
 
