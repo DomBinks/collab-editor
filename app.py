@@ -5,11 +5,6 @@ from os import getenv
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = getenv('APP_SECRET_KEY') 
-
-# If the environment variable isn't set use this one instead
-if app.config['SECRET_KEY'] == None:
-   app.config['SECRET_KEY'] = '223c342ae283c1db56027b42a479e83f516153346c82bd'
-
 socketio = SocketIO(app)
 
 session_contents = {} # Content of every session's text area 
@@ -64,8 +59,6 @@ def handle_start_session():
 
     # Redirect the client to the editor page for the new session
     socketio.emit('redirect', {'page': '/editor/' + session_id})
-
-    print('Starting new session with id ' + session_id)
     return
 
 @socketio.on('connect to session')
@@ -93,12 +86,8 @@ def handle_close_session(json):
 
     # Tells the client to go to the index page
     socketio.emit('index', json)
-
-    print('Closed session with id ' + json['session_id'])
     return
 
 #-----Run-----
 if __name__ == '__main__':
-    print('Starting server')
-    print('Secret key: ' + app.config['SECRET_KEY'])
     socketio.run(app)
