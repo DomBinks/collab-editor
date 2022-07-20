@@ -6,9 +6,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'OhJUfTfM4igIiYsfnkOQ'
 socketio = SocketIO(app)
 
-current_users = {} # Numbers of users connected to each session 
-current_conents = {} # Content of every session's text area 
-current_ids = {} # Session each user is connected to  
+session_contents = {} # Content of every session's text area 
 
 #-----Routing-----
 @app.route('/')
@@ -17,7 +15,7 @@ def index():
 
 @app.route('/editor/<session_id>')
 def editor(session_id):
-    if session_id in current_users:
+    if session_id in session_contents:
         return render_template('editor.html', session_id=session_id)
     else:
         return render_template('error.html',
@@ -52,12 +50,11 @@ def handle_start_session():
     # Generate a new random session id
     while True:
         session_id = ''.join(str(randint(0, 9)) for _ in range(6))
-        if session_id not in current_users:
+        if session_id not in session_contents:
             break
 
-    # Set up dictionary starting values
-    current_users[session_id] = 0
-    current_conents[session_id] = ''
+    # Set up the dictionary that keeps track of the contents of the text area 
+    session_contents[session_id] = ''
 
     # Redirect the client to the editor page for the new session
     socketio.emit('redirect', {'page': '/editor/' + session_id})
@@ -69,42 +66,32 @@ def handle_start_session():
 def handle_connect_to_session(json):
     session_id = json['session_id']
 
-    # Update dictionary values
-    current_users[session_id] += 1
-    current_ids[request.sid] = session_id
-
     # Updates the client's text area with the current session content
     socketio.emit('update text', {'session_id': session_id,
-        'content': current_conents[session_id]})
-
-    print('Connection to session ' + session_id + ' by ' + request.sid) 
+        'content': session_contents[session_id]})
     return
 
 @socketio.on('text change')
 def handle_box_change(json):
     # Stores the current content of the text area
-    current_conents[json['session_id']] = json['content']
+    session_contents[json['session_id']] = json['content']
 
     # Tells other clients to update their text areas
     socketio.emit('update text', json)
     return
 
-@socketio.on('disconnect')
-def handle_disconnect():
-    # If a user who is connected to a session disconnects
-    if request.sid in current_ids:
-        # Decrement the user count of the session
-        current_users[current_ids[request.sid]] -= 1
-        if current_users[current_ids[request.sid]] == 0:
-            # Delete the session if there are no clients connected
-            del current_users[current_ids[request.sid]] 
-            del current_conents[current_ids[request.sid]]
-        # Remove the user from the dictionary of connected users
-        del current_ids[request.sid]
+@socketio.on('close session')
+def handle_close_session(json):
+    # Delete the contents of the session's text area 
+    del session_contents[json['session_id']]
 
-    print('Disconnection by ' + request.sid)
+    # Tells the client to go to the index page
+    socketio.emit('index', json)
+
+    print('Session with id ' + json['session_id'] + ' has been closed')
     return
 
 #-----Run-----
 if __name__ == '__main__':
+    print('Starting server')
     socketio.run(app)

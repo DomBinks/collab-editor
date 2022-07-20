@@ -19,7 +19,7 @@
   <body>
     <a href="{{ url_for('index') }}"><h1>Collaborative Editor</h1></a>
     <h2>Current session id: {{ session_id }}</h2>
-    <form method="POST" action="{{ url_for('download') }}">
+    <form method="POST" action="{{ url_for('download') }}" target="_blank">
       <select name="extension">
         <option value=".py">Python</option>
         <option value=".js">JavaScript</option>
@@ -31,5 +31,6 @@
       <br>
       <input type="submit" value="Download"></input>
     </form>
+    <button onclick="closeSession()">Close Session</button>
   </body>
 </html>

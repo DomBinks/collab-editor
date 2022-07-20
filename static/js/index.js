@@ -1,7 +1,7 @@
 let socket = io();
 
 // Called when the start new session button is clicked
-function startNewSession()
+function startSession()
 {
     socket.emit('start session');
 }
